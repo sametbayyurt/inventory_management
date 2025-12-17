@@ -2,13 +2,14 @@
 
 ---
 
-## 🇬🇧 English
 
 ### 📌 Description
 Inventory Management App is a **basic mobile application** developed using **Flutter**.  
 It allows users to manage products and categories through simple CRUD operations with a local database.
 
-This project is mainly developed for **learning and practice purposes**.
+The application also supports **QR code scanning** to quickly access product details.
+
+This project was mainly developed for **learning and practice purposes**.
 
 ---
 
@@ -19,15 +20,10 @@ This project is mainly developed for **learning and practice purposes**.
 - Delete products
 - Category-based product management
 - Local database (SQLite)
+- QR code generation for products
+- QR code scanning to navigate directly to product details
 - State management using BLoC / Cubit
 - Clean and modular Flutter project structure
-
----
-
-### ⚠️ Planned Features
-The following features are **planned for future versions** but are **not implemented** in the current release:
-- QR code scanning
-- Application settings page
 
 ---
 
@@ -36,6 +32,8 @@ The following features are **planned for future versions** but are **not impleme
 - Dart
 - SQLite
 - flutter_bloc (Cubit)
+- mobile_scanner (QR scanning)
+- qr_flutter (QR generation)
 
 ---
 
@@ -45,6 +43,7 @@ This project was developed to improve skills in:
 - State management with BLoC / Cubit
 - CRUD operations
 - Local database integration
+- Camera & QR code integration
 
 ---
 
@@ -54,4 +53,3 @@ git clone https://github.com/sametbayyurt/inventory_management.git
 cd inventory_management
 flutter pub get
 flutter run
-

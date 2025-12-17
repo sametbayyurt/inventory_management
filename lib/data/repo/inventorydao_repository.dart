@@ -92,4 +92,35 @@ class InventoryDaoRepository {
     updatedProduct["category_id"] = categoryId;
     await db.update("products", updatedProduct, where: "id = ?",whereArgs: [id]);
   }
+
+  Future<Products> getProductById(int id) async {
+    var db = await DatabaseHelper.databaseAccess();
+
+    List<Map<String, dynamic>> maps = await db.rawQuery("""
+    SELECT 
+      products.id,
+      products.name,
+      products.stock,
+      products.category_id,
+      categories.name AS category_name
+    FROM products
+    JOIN categories
+      ON products.category_id = categories.id
+    WHERE products.id = ?
+  """, [id]);
+
+    if (maps.isNotEmpty) {
+      var row = maps.first;
+      return Products(
+        id: row["id"],
+        name: row["name"],
+        stock: row["stock"],
+        categoryId: row["category_id"],
+        categoryName: row["category_name"],
+      );
+    } else {
+      throw Exception("Ürün bulunamadı");
+    }
+  }
+
 }

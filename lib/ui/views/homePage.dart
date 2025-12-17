@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inventory_management/data/repo/inventorydao_repository.dart';
 import 'package:inventory_management/ui/cubit/addProductPageCubit.dart';
+import 'package:inventory_management/ui/cubit/qrPageCubit.dart';
+import 'package:inventory_management/ui/views/qrPage.dart';
 import 'package:inventory_management/ui/views/addProductPage.dart';
 import 'package:inventory_management/ui/views/productsPage.dart';
 
@@ -63,13 +66,16 @@ class HomePage extends StatelessWidget {
                     subtitle: "Ürünün QR kodunu okut",
                     imageName: "qrscan.png",
                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider(
+                            create: (_) => QrPageCubit(InventoryDaoRepository()),
+                            child: const QrPage(),
+                          ),
+                        ),
+                      );
                     },
-                  ),
-                  HomeCard(
-                    title: "Ayarlar",
-                    subtitle: "Uygulama ayarları",
-                    imageName: "settings.png",
-                    onTap: () {},
                   ),
                 ],
               ),
@@ -120,7 +126,6 @@ class HomeCard extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontFamily: 'Lexend',
                     fontSize: size.width * 0.045,
                     fontWeight: FontWeight.bold,
                   ),
@@ -130,7 +135,6 @@ class HomeCard extends StatelessWidget {
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontFamily: 'Lexend',
                     fontSize: size.width * 0.025,
                   ),
                   textAlign: TextAlign.center,
