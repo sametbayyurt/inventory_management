@@ -73,7 +73,7 @@ class InventoryDaoRepository {
         id: row["id"],
         name: row["name"],
         stock: row["stock"],
-        categoryId: row["category_id"],   // ✅
+        categoryId: row["category_id"],
         categoryName: row["category_name"],
       );
     });
@@ -122,5 +122,4 @@ class InventoryDaoRepository {
       throw Exception("Ürün bulunamadı");
     }
   }
-
 }
