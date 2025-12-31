@@ -103,11 +103,11 @@ class InventoryDaoRepository {
       products.stock,
       products.category_id,
       categories.name AS category_name
-    FROM products
-    JOIN categories
-      ON products.category_id = categories.id
-    WHERE products.id = ?
-  """, [id]);
+      FROM products
+      JOIN categories
+        ON products.category_id = categories.id
+      WHERE products.id = ?
+    """, [id]);
 
     if (maps.isNotEmpty) {
       var row = maps.first;
@@ -119,7 +119,7 @@ class InventoryDaoRepository {
         categoryName: row["category_name"],
       );
     } else {
-      throw Exception("Ürün bulunamadı");
+      throw Exception("Ürün Bulunamadı");
     }
   }
 }

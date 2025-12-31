@@ -1,11 +1,11 @@
-import 'package:inventory_management/data/entity/products.dart';
-
 abstract class QrState {}
 
 class QrInitial extends QrState {}
 
+class QrLoading extends QrState {}
+
 class QrSuccess extends QrState {
-  final Products product;
+  final dynamic product;
   QrSuccess(this.product);
 }
 

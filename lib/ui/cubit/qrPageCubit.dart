@@ -7,12 +7,27 @@ class QrPageCubit extends Cubit<QrState> {
 
   QrPageCubit(this.repo) : super(QrInitial());
 
-  Future<void> getProductById(int id) async {
-    try {
-      final product = await repo.getProductById(id);
+  Future<void> getProductByQr(String? qrValue) async {
+    emit(QrLoading());
+
+    if (qrValue == null || qrValue.isEmpty) {
+      emit(QrError("QR Kod Okunamadı!"));
+      return;
+    }
+
+    final int? id = int.tryParse(qrValue);
+
+    if (id == null) {
+      emit(QrError("Geçersiz QR Kod"));
+      return;
+    }
+
+    final product = await repo.getProductById(id);
+
+    if (product == null) {
+      emit(QrError("Ürün Bulunamadı"));
+    } else {
       emit(QrSuccess(product));
-    } catch (e) {
-      emit(QrError("Ürün bulunamadı"));
     }
   }
 }

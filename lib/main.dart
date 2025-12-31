@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_management/ui/cubit/addProductPageCubit.dart';
 import 'package:inventory_management/ui/cubit/detailPageCubit.dart';
@@ -6,7 +7,12 @@ import 'package:inventory_management/ui/cubit/productsPageCubit.dart';
 import 'package:inventory_management/ui/cubit/updatePageCubit.dart';
 import 'package:inventory_management/ui/views/homePage.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+    await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
   runApp(const MyApp());
 }
 

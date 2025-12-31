@@ -13,10 +13,14 @@ class QrPage extends StatefulWidget {
 }
 
 class _QrPageState extends State<QrPage> {
+
+  static const Color primaryBlue = Color(0xFF0B3C5D);
+  static const Color pageBg = Color(0xFFF1F3F5);
+
   bool showScanner = false;
   bool isScanned = false;
 
-  final MobileScannerController controller = MobileScannerController();
+  final MobileScannerController _controller = MobileScannerController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,32 +34,38 @@ class _QrPageState extends State<QrPage> {
             ),
           );
         }
+
         if (state is QrError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
-
-          setState(() {
-            showScanner = false;
-            isScanned = false;
-          });
+          _controller.start();
+          isScanned = false;
         }
       },
       child: Scaffold(
+        backgroundColor: pageBg,
         appBar: AppBar(
-          title: const Text("QR Tara"),
-          centerTitle: true,
+          backgroundColor: primaryBlue,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text(
+            "QR Tara",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         body: showScanner ? _scannerView() : _introView(),
       ),
     );
   }
+
   Widget _introView() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Card(
-          elevation: 6,
+          color: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -70,7 +80,7 @@ class _QrPageState extends State<QrPage> {
                 const Icon(
                   Icons.qr_code_scanner,
                   size: 90,
-                  color: Colors.blueAccent,
+                  color: primaryBlue,
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -78,6 +88,7 @@ class _QrPageState extends State<QrPage> {
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
+                    color: primaryBlue,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -90,9 +101,16 @@ class _QrPageState extends State<QrPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    icon: const Icon(Icons.camera_alt,color: Colors.blueAccent,),
-                    label: const Text("QR Okut",style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),),
+                    icon: const Icon(Icons.camera_alt, color: Colors.white),
+                    label: const Text(
+                      "QR OKUT",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryBlue,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -113,27 +131,27 @@ class _QrPageState extends State<QrPage> {
       ),
     );
   }
+
   Widget _scannerView() {
     return Stack(
       children: [
         MobileScanner(
-          controller: controller,
+          controller: _controller,
           onDetect: (capture) {
             if (isScanned) return;
 
             final String? code =
                 capture.barcodes.first.rawValue;
 
-            if (code != null) {
-              isScanned = true;
-              controller.stop();
+            if (code == null) return;
 
-              context
-                  .read<QrPageCubit>()
-                  .getProductById(int.parse(code));
-            }
+            isScanned = true;
+            _controller.stop();
+
+            context.read<QrPageCubit>().getProductByQr(code);
           },
         ),
+
         Center(
           child: Container(
             width: 240,
@@ -141,12 +159,13 @@ class _QrPageState extends State<QrPage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
-                color: Colors.greenAccent,
+                color: primaryBlue,
                 width: 3,
               ),
             ),
           ),
         ),
+
         Positioned(
           top: 20,
           left: 16,
@@ -155,7 +174,7 @@ class _QrPageState extends State<QrPage> {
             child: IconButton(
               icon: const Icon(Icons.close, color: Colors.white),
               onPressed: () {
-                controller.stop();
+                _controller.stop();
                 setState(() {
                   showScanner = false;
                   isScanned = false;
@@ -164,26 +183,30 @@ class _QrPageState extends State<QrPage> {
             ),
           ),
         ),
+
         Positioned(
           bottom: 30,
           right: 24,
           child: FloatingActionButton(
             heroTag: "flash",
-            backgroundColor: Colors.black87,
+            backgroundColor: primaryBlue,
             child: const Icon(Icons.flash_on),
             onPressed: () {
-              controller.toggleTorch();
+              _controller.toggleTorch();
             },
           ),
         ),
+
         Positioned(
           bottom: 90,
           left: 0,
           right: 0,
           child: Center(
             child: Container(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
               decoration: BoxDecoration(
                 color: Colors.black54,
                 borderRadius: BorderRadius.circular(20),
