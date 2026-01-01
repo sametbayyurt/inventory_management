@@ -5,7 +5,7 @@ import 'package:inventory_management/ui/cubit/addProductPageCubit.dart';
 import 'package:inventory_management/ui/cubit/detailPageCubit.dart';
 import 'package:inventory_management/ui/cubit/productsPageCubit.dart';
 import 'package:inventory_management/ui/cubit/updatePageCubit.dart';
-import 'package:inventory_management/ui/views/homePage.dart';
+import 'package:inventory_management/ui/views/roleSelectionPage.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
