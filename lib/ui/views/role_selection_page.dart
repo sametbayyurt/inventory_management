@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_management/data/repo/inventorydao_repository.dart';
-import 'package:inventory_management/ui/cubit/addProductPageCubit.dart';
-import 'package:inventory_management/ui/cubit/qrPageCubit.dart';
-import 'package:inventory_management/ui/views/addProductPage.dart';
-import 'package:inventory_management/ui/views/productsPage.dart';
-import 'package:inventory_management/ui/views/qrPage.dart';
+import 'package:inventory_management/ui/cubit/add_product_page_cubit.dart';
+import 'package:inventory_management/ui/cubit/qr_page_cubit.dart';
+import 'package:inventory_management/ui/views/add_product_page.dart';
+import 'package:inventory_management/ui/views/products_page.dart';
+import 'package:inventory_management/ui/views/qr_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,9 +19,7 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.05,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             child: Column(
               children: [
                 SizedBox(height: size.height * 0.04),
@@ -58,7 +56,7 @@ class HomePage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => BlocProvider(
                               create: (_) =>
-                              AddProductPageCubit()..loadCategory(),
+                                  AddProductPageCubit()..loadCategory(),
                               child: const AddProductPage(),
                             ),
                           ),

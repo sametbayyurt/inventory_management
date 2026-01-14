@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_management/data/repo/inventorydao_repository.dart';
-import 'package:inventory_management/ui/views/qrState.dart';
+import 'package:inventory_management/ui/views/qr_state.dart';
 
 class QrPageCubit extends Cubit<QrState> {
   final InventoryDaoRepository repo;

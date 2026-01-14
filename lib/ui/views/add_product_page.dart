@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_management/data/entity/categories.dart';
-import 'package:inventory_management/data/entity/products.dart';
-import 'package:inventory_management/ui/cubit/updatePageCubit.dart';
+import 'package:inventory_management/ui/cubit/add_product_page_cubit.dart';
 
-class UpdatePage extends StatefulWidget {
-  final Products product;
-
-  const UpdatePage({super.key, required this.product});
+class AddProductPage extends StatefulWidget {
+  const AddProductPage({super.key});
 
   @override
-  State<UpdatePage> createState() => _UpdatePageState();
+  State<AddProductPage> createState() => _AddProductPageState();
 }
 
-class _UpdatePageState extends State<UpdatePage> {
-
+class _AddProductPageState extends State<AddProductPage> {
   static const Color primaryBlue = Color(0xFF0B3C5D);
   static const Color pageBg = Color(0xFFF1F3F5);
   static const Color white = Colors.white;
@@ -24,24 +20,6 @@ class _UpdatePageState extends State<UpdatePage> {
   final TextEditingController tfStock = TextEditingController();
 
   Categories? selectedCategory;
-  List<Categories> categoryList = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    tfName.text = widget.product.name;
-    tfStock.text = widget.product.stock.toString();
-
-    context.read<UpdatePageCubit>().loadCategories().then((list) {
-      setState(() {
-        categoryList = list;
-        selectedCategory = list.firstWhere(
-              (c) => c.id == widget.product.categoryId,
-        );
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +28,7 @@ class _UpdatePageState extends State<UpdatePage> {
       appBar: AppBar(
         backgroundColor: primaryBlue,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
-          "Ürün Güncelle",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text("Ürün Ekle", style: TextStyle(color: Colors.white)),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -84,39 +59,42 @@ class _UpdatePageState extends State<UpdatePage> {
                 TextField(
                   controller: tfStock,
                   keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: _decoration("Stok"),
                 ),
 
                 const SizedBox(height: 20),
 
-                DropdownButtonFormField<Categories>(
-                  value: selectedCategory,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
-                  ),
-                  decoration: _decoration("Kategori"),
-                  dropdownColor: white,
-                  items: categoryList.map((c) {
-                    return DropdownMenuItem<Categories>(
-                      value: c,
-                      child: Text(
-                        c.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black,
-                        ),
+                BlocBuilder<AddProductPageCubit, List<Categories>>(
+                  builder: (context, list) {
+                    if (list.isEmpty) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    return DropdownButtonFormField<Categories>(
+                      value: selectedCategory,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
                       ),
+                      decoration: _decoration("Kategori"),
+                      dropdownColor: white,
+                      items: list.map((c) {
+                        return DropdownMenuItem<Categories>(
+                          value: c,
+                          child: Text(
+                            c.name,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCategory = value;
+                        });
+                      },
                     );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCategory = value;
-                    });
                   },
                 ),
 
@@ -133,25 +111,25 @@ class _UpdatePageState extends State<UpdatePage> {
                       ),
                     ),
                     onPressed: () {
-                      context.read<UpdatePageCubit>().update(
-                        widget.product.id,
+                      context.read<AddProductPageCubit>().save(
                         tfName.text,
                         int.parse(tfStock.text),
                         selectedCategory!.id,
                       );
 
-                      Navigator.pop(context);
-                      Navigator.pop(context);
+                      tfName.clear();
+                      tfStock.clear();
+                      setState(() => selectedCategory = null);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           backgroundColor: primaryBlue,
-                          content: Text("Ürün güncellendi"),
+                          content: Text("Ürün eklendi"),
                         ),
                       );
                     },
                     child: const Text(
-                      "GÜNCELLE",
+                      "KAYDET",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -172,8 +150,10 @@ class _UpdatePageState extends State<UpdatePage> {
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: Colors.black54),
+
       filled: true,
       fillColor: white,
+
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: Colors.grey.shade300),

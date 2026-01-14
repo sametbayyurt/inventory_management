@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:inventory_management/ui/cubit/qrPageCubit.dart';
-import 'package:inventory_management/ui/views/detailPage.dart';
-import 'package:inventory_management/ui/views/qrState.dart';
+import 'package:inventory_management/ui/cubit/qr_page_cubit.dart';
+import 'package:inventory_management/ui/views/detail_page.dart';
+import 'package:inventory_management/ui/views/qr_state.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QrPage extends StatefulWidget {
@@ -13,7 +13,6 @@ class QrPage extends StatefulWidget {
 }
 
 class _QrPageState extends State<QrPage> {
-
   static const Color primaryBlue = Color(0xFF0B3C5D);
   static const Color pageBg = Color(0xFFF1F3F5);
 
@@ -36,9 +35,9 @@ class _QrPageState extends State<QrPage> {
         }
 
         if (state is QrError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
           _controller.start();
           isScanned = false;
         }
@@ -48,10 +47,7 @@ class _QrPageState extends State<QrPage> {
         appBar: AppBar(
           backgroundColor: primaryBlue,
           iconTheme: const IconThemeData(color: Colors.white),
-          title: const Text(
-            "QR Tara",
-            style: TextStyle(color: Colors.white),
-          ),
+          title: const Text("QR Tara", style: TextStyle(color: Colors.white)),
         ),
         body: showScanner ? _scannerView() : _introView(),
       ),
@@ -70,18 +66,11 @@ class _QrPageState extends State<QrPage> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 40,
-              horizontal: 24,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
-                  Icons.qr_code_scanner,
-                  size: 90,
-                  color: primaryBlue,
-                ),
+                const Icon(Icons.qr_code_scanner, size: 90, color: primaryBlue),
                 const SizedBox(height: 16),
                 const Text(
                   "QR Kod Okut",
@@ -140,8 +129,7 @@ class _QrPageState extends State<QrPage> {
           onDetect: (capture) {
             if (isScanned) return;
 
-            final String? code =
-                capture.barcodes.first.rawValue;
+            final String? code = capture.barcodes.first.rawValue;
 
             if (code == null) return;
 
@@ -158,10 +146,7 @@ class _QrPageState extends State<QrPage> {
             height: 240,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: primaryBlue,
-                width: 3,
-              ),
+              border: Border.all(color: primaryBlue, width: 3),
             ),
           ),
         ),
@@ -203,10 +188,7 @@ class _QrPageState extends State<QrPage> {
           right: 0,
           child: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: Colors.black54,
                 borderRadius: BorderRadius.circular(20),

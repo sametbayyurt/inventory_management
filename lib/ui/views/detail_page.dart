@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_management/data/entity/products.dart';
-import 'package:inventory_management/ui/cubit/detailPageCubit.dart';
-import 'package:inventory_management/ui/views/updatePage.dart';
+import 'package:inventory_management/ui/cubit/detail_page_cubit.dart';
+import 'package:inventory_management/ui/views/update_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -55,9 +55,7 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
 
-    await Printing.layoutPdf(
-      onLayout: (_) async => pdf.save(),
-    );
+    await Printing.layoutPdf(onLayout: (_) async => pdf.save());
   }
 
   @override
@@ -67,10 +65,7 @@ class _DetailPageState extends State<DetailPage> {
       appBar: AppBar(
         backgroundColor: primaryBlue,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
-          "Ürün Detayı",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text("Ürün Detayı", style: TextStyle(color: Colors.white)),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -127,10 +122,7 @@ class _DetailPageState extends State<DetailPage> {
                 Center(
                   child: Text(
                     "Ürün Kodu: ${widget.product.id}",
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ),
 
@@ -162,12 +154,13 @@ class _DetailPageState extends State<DetailPage> {
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.edit, color: Colors.white),
-                        label: const Text("GÜNCELLE",
-                            style: TextStyle(color: Colors.white)),
+                        label: const Text(
+                          "GÜNCELLE",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryBlue,
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 14),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -187,12 +180,13 @@ class _DetailPageState extends State<DetailPage> {
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.delete, color: Colors.white),
-                        label: const Text("SİL",
-                            style: TextStyle(color: Colors.white)),
+                        label: const Text(
+                          "SİL",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryBlue,
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 14),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -222,10 +216,7 @@ class _DetailPageState extends State<DetailPage> {
               color: Colors.black87,
             ),
           ),
-          Text(
-            value,
-            style: const TextStyle(color: Colors.black54),
-          ),
+          Text(value, style: const TextStyle(color: Colors.black54)),
         ],
       ),
     );
@@ -236,33 +227,28 @@ class _DetailPageState extends State<DetailPage> {
       context: context,
       builder: (_) => AlertDialog(
         title: const Text("Silme Onayı"),
-        content:
-        const Text("Bu ürünü silmek istediğinize emin misiniz?"),
+        content: const Text("Bu ürünü silmek istediğinize emin misiniz?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("İptal",style: TextStyle(color: primaryBlue),),
+            child: const Text("İptal", style: TextStyle(color: primaryBlue)),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryBlue,
-            ),
+            style: ElevatedButton.styleFrom(backgroundColor: primaryBlue),
             onPressed: () {
-              context
-                  .read<DetailPageCubit>()
-                  .delete(widget.product.id);
+              context.read<DetailPageCubit>().delete(widget.product.id);
 
               Navigator.pop(context);
               Navigator.pop(context);
 
               ScaffoldMessenger.of(context).showSnackBar(
-
-                const SnackBar(backgroundColor: primaryBlue,
-                    content: Text("Ürün Silindi")),
+                const SnackBar(
+                  backgroundColor: primaryBlue,
+                  content: Text("Ürün Silindi"),
+                ),
               );
             },
-            child: const Text("Sil",
-                style: TextStyle(color: Colors.white)),
+            child: const Text("Sil", style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
