@@ -60,7 +60,6 @@ This project was developed to improve skills in:
 </p>
 
 
-
 ---
 
 ### 🔧 Installation
