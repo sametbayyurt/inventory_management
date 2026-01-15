@@ -47,7 +47,24 @@ This project was developed to improve skills in:
 
 ---
 
+## 📱 Screenshots
+
+<p>
+  <img src="screenshots/landing.png" width="240" />
+  <img src="screenshots/products.png" width="240" />
+  <img src="screenshots/product_detail.png" width="240" />
+</p>
+<p>
+  <img src="screenshots/qr_print.png" width="240" />
+  <img src="screenshots/qr_scan.png" width="240" />
+</p>
+
+
+
+---
+
 ### 🔧 Installation
+
 ```bash
 git clone https://github.com/sametbayyurt/inventory_management.git
 cd inventory_management

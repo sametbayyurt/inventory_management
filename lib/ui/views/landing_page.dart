@@ -7,8 +7,8 @@ import 'package:inventory_management/ui/views/add_product_page.dart';
 import 'package:inventory_management/ui/views/products_page.dart';
 import 'package:inventory_management/ui/views/qr_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class LandingPage extends StatelessWidget {
+  const LandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
